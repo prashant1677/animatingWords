@@ -121,7 +121,7 @@ var demo;
         this.CANVAS_W = 260;
         this.CANVAS_H = 60;
         // this.WORD_LIST = ["WebGL", "HTML5", "three.js"];
-        this.WORD_LIST = ["ALL THE BEST"];
+        this.WORD_LIST = ["❤️"];
         this._matrixLength = 5;
         this._particleList = [];
         this._wordIndex = 0;

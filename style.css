@@ -11,4 +11,19 @@ body {
   width: 100%;
   height: 100%;
   opacity: 1.0;
-  background: #000000; }
+  background: #05060a;
+}
+
+/* Make sure canvas/WebGL content has enough contrast */
+/* No UI markup in this minimal repo; keep only global contrast defaults */
+canvas { display: block; }
+
+body {
+  color: rgba(255, 255, 255, 0.95);
+  background: #05060a;
+}
+
+/* Ensure any default text rendered over the page stays bright */
+* {
+  color: inherit;
+}

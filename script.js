@@ -2,12 +2,7 @@ THREE.ImageUtils.crossOrigin = "*";
 
 var demo;
 (function(demo) {
-  /**
-   * BasicView は、Three.js のプロジェクトを簡単にセットアップすることができるクラスです。
-   * シーン、カメラ、レンダラー、ビューポートのシンプルなテンプレートを提供しています。
-   * @author Yausunobu Ikeda a.k.a @clockmaker
-   * @class demo.BasicView
-   */
+  
   var BasicView = (function() {
     function BasicView() {
         var _this = this;
@@ -16,7 +11,7 @@ var demo;
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 200000);
         this.camera.position.z = -1000;
-        // アンチエイリアス設定有無
+        
         var needAntialias = window.devicePixelRatio == 1.0;
         this.renderer = new THREE.WebGLRenderer({
           antialias: needAntialias
@@ -30,7 +25,7 @@ var demo;
         }, false);
       }
       /**
-       * ウインドウリサイズ時のイベントハンドラーです。
+       * Resize handler.
        * @param event
        */
     BasicView.prototype.handleResize = function(event) {
@@ -39,13 +34,13 @@ var demo;
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     };
     /**
-     * レンダリングを開始します。
+     * Start rendering.
      */
     BasicView.prototype.startRendering = function() {
       this.update();
     };
     /**
-     * requestAnimationFrame で呼び出されるメソッドです。
+     * Method invoked by requestAnimationFrame.
      * @private
      */
     BasicView.prototype.update = function() {
@@ -54,13 +49,13 @@ var demo;
       this.render();
     };
     /**
-     * レンダリングを即座に実行します。
+     * Renders immediately.
      */
     BasicView.prototype.render = function() {
       this.renderer.render(this.scene, this.camera);
     };
     /**
-     * 毎フレーム実行される関数です。
+     * Called every frame.
      */
     BasicView.prototype.onTick = function() {};
     return BasicView;
@@ -82,13 +77,10 @@ var __extends = this.__extends || function(d, b) {
 var demo;
 (function(demo) {
   var FONT_NAME = "Source Code Pro";
-  /**
-   * 3Dのパーティクル表現のデモクラスです。プリロードしてから実行します。
-   * @author Yausnobu Ikeda a.k.a clockmaker
-   */
+ 
   var DemoIconsPreload = (function() {
     function DemoIconsPreload() {
-      // ウェブフォントのロードを待ってから初期化
+      // Wait for web fonts to load, then initialize
       WebFont.load({
         custom: {
           families: ['Source Code Pro', 'FontAwesome'],
@@ -100,7 +92,7 @@ var demo;
             'FontAwesome': '\uf001'
           }
         },
-        // Web Fontが使用可能になったとき
+        // When the web font becomes available
         active: function() {
           new DemoIconsWorld();
         }
@@ -109,10 +101,7 @@ var demo;
     return DemoIconsPreload;
   })();
   demo.DemoIconsPreload = DemoIconsPreload;
-  /**
-   * 3Dのパーティクル表現のクラスです。
-   * @author Yausnobu Ikeda a.k.a clockmaker
-   */
+
   var DemoIconsWorld = (function(_super) {
     __extends(DemoIconsWorld, _super);
 
@@ -121,11 +110,11 @@ var demo;
         this.CANVAS_W = 260;
         this.CANVAS_H = 60;
         // this.WORD_LIST = ["WebGL", "HTML5", "three.js"];
-        this.WORD_LIST = ["❤️"];
+        this.WORD_LIST = ["Happy", "Mothers Day❤️"];
         this._matrixLength = 5;
         this._particleList = [];
         this._wordIndex = 0;
-        /** 色相 0.0〜1.0 */
+        /** Hue range: 0.0 to 1.0 */
         this._hue = 1;
         this.HELPER_ZERO = new THREE.Vector3(0, 0, 0);
         this.setup();
@@ -133,11 +122,11 @@ var demo;
         this.startRendering();
       }
       /**
-       * セットアップします。
+       * Sets up the scene.
        */
     DemoIconsWorld.prototype.setup = function() {
       // ------------------------------
-      // カメラの配置
+      // Position the camera
       // ------------------------------
       this.camera.far = 100000;
       this.camera.near = 1;
@@ -145,7 +134,7 @@ var demo;
       this.camera.lookAt(this.HELPER_ZERO);
 
       // ------------------------------
-      // 背景の作成
+      // Create the background
       // ------------------------------
       var plane = new THREE.PlaneBufferGeometry(50000, 50000, 1, 1);
       var mat = new THREE.MeshBasicMaterial({
@@ -157,7 +146,7 @@ var demo;
       this._bg = bg;
 
       // ------------------------------
-      // 3D空間のパーツを配置
+      // Set up objects for the 3D scene
       // ------------------------------
       var light = new THREE.DirectionalLight(0xffffff);
       light.position.set(0, 1, +1).normalize();
@@ -166,7 +155,7 @@ var demo;
       this._wrap = new THREE.Object3D();
       this.scene.add(this._wrap);
       // ------------------------------
-      // パーティクルのテクスチャアトラスを生成
+      // Generate the particle texture atlas
       // ------------------------------
       var container = new createjs.Container();
       var SIZE = 256;
@@ -186,7 +175,7 @@ var demo;
       var texture = new THREE.Texture(image);
       texture.needsUpdate = true;
       // ------------------------------
-      // パーティクルの作成
+      // Create the particles
       // ------------------------------
       var ux = 1 / this._matrixLength;
       var uy = 1 / this._matrixLength;
@@ -212,14 +201,14 @@ var demo;
       this.createParticleCloud();
     };
     DemoIconsWorld.prototype.createParticleCloud = function() {
-      // 形状データを作成
+      // Create shape data
       var geometry = new THREE.Geometry();
       var numParticles = 50000;
       var SIZE = 10000;
       for (var i = 0; i < numParticles; i++) {
         geometry.vertices.push(new THREE.Vector3(SIZE * (Math.random() - 0.5), SIZE * (Math.random() - 0.5), SIZE * (Math.random() - 0.5)));
       }
-      // マテリアルを作成
+      // Create material
       var texture = THREE.ImageUtils.loadTexture('http://ics-web.jp/lab-data/150601_threejs_mosaic/imgs/fire_particle.png');
       var material = new THREE.PointCloudMaterial({
         size: 30,
@@ -229,17 +218,17 @@ var demo;
         depthTest: false,
         map: texture
       });
-      // 物体を作成
+      // Create the object
       var mesh = new THREE.PointCloud(geometry, material);
       mesh.position = new THREE.Vector3(0, 0, 0);
       this.scene.add(mesh);
     };
     /**
-     * ロゴを生成し、モーションします。
+     * Generates the logo and animates it.
      */
     DemoIconsWorld.prototype.createLogo = function() {
       var _this = this;
-      // レターオブジェクトを生成します。
+      // Create the letter objects.
       var canvas = document.createElement("canvas");
       canvas.setAttribute("width", this.CANVAS_W + "px");
       canvas.setAttribute("height", this.CANVAS_H + "px");
@@ -270,26 +259,26 @@ var demo;
       for (var i = 0; i < this._particleList.length; i++) {
         this._particleList[i].visible = false;
       }
-      // 透過領域を判定する
+      // Determine transparent pixels
       var pixcelColors = ctx.getImageData(0, 0, this.CANVAS_W, this.CANVAS_H).data;
       var existDotList = [];
       var existDotCount = 0;
       for (var i = 0; i < this.CANVAS_W; i++) {
         existDotList[i] = [];
         for (var j = 0; j < this.CANVAS_H; j++) {
-          // 透過しているか判定
+          // Check whether the pixel is transparent
           var flag = (pixcelColors[(i + j * this.CANVAS_W) * 4 + 3] == 0);
           existDotList[i][j] = flag;
           if (flag == true)
             existDotCount++;
         }
       }
-      // レターのモーションを作成する
+      // Create the letter motion
       var cnt = 0;
       var max = this.CANVAS_W * this.CANVAS_H;
       for (var i = 0; i < this.CANVAS_W; i++) {
         for (var j = 0; j < this.CANVAS_H; j++) {
-          // 透過していたらパスする
+          // Skip transparent pixels
           if (existDotList[i][j] == true)
             continue;
           var word = this._particleList[cnt];
@@ -347,7 +336,7 @@ var demo;
         ease: Quart.easeIn
       }, 0);
       // ------------------------
-      // 3種類のカメラモーションのいずれかを適用する
+      // Apply one of the three camera motions
       // ------------------------
       if (Math.random() < 0.3) {
         timeline.set(this.camera.position, {
@@ -393,14 +382,14 @@ var demo;
           ease: Quart.easeInOut
         }, 0);
       }
-      // 黒マットのフェードイン
+      // Fade in the black matte
       timeline.to("#coverBlack", 1.0, {
         css: {
           opacity: 0.0
         }
       }, 0.0);
       // ------------------------
-      // 3種類のタイムリマップのいずれかを適用する
+      // Apply one of the three time remap modes
       // ------------------------
       if (Math.random() < 0.3) {
         timeline.timeScale(3.0);
@@ -439,9 +428,9 @@ var demo;
       } else {
         timeline.timeScale(1.0);
       }
-      // 背景の色変更
+      // Change background color
       this._bg.material.color.setHSL(this._hue, 1.0, 0.5);
-      // 色相を移動
+      // Shift hue value
       this._hue += 0.2;
       if (this._hue >= 1.0) {
         this._hue = 0.0;
@@ -450,7 +439,7 @@ var demo;
     DemoIconsWorld.prototype.onTick = function() {
       _super.prototype.onTick.call(this);
       this.camera.lookAt(this.HELPER_ZERO);
-      // 背景をカメラの反対側に配置
+      // Position the background on the opposite side of the camera
       var vec = this.camera.position.clone();
       vec.negate();
       vec.normalize();
@@ -459,7 +448,7 @@ var demo;
       this._bg.lookAt(this.camera.position);
     };
     /**
-     * ジオメトリ内のUVを変更します。
+     * Updates the UVs within the geometry.
      * @param geometry    {THREE.PlaneGeometry}
      * @param unitx    {number}
      * @param unity    {number}
